@@ -10,7 +10,7 @@ class Category (models.Model) :
     name = models.CharField(_("Name"), max_length=125)
     slug = models.SlugField(_("Slug"), unique=True, db_index=True)
     details = models.TextField(_("Details"), null=True, blank=True)
-    image = models.ImageField(_("Image"), upload_to='categoty/image', null=True)
+    image = models.ImageField(_("Image"), upload_to='categoty/image', blank=True, null=True)
     parent = models.ForeignKey('self', verbose_name=_("Parent"), on_delete=models.SET_NULL, null=True, blank=True, related_name='children', related_query_name='children')
     
 
@@ -26,7 +26,7 @@ class Brand (models.Model) :
     name = models.CharField(_("Name"), max_length=150)
     slug = models.SlugField(_("Slug"), db_index=True, unique=True)
     details = models.TextField(_("Details"), null=True, blank=True)
-    image = models.ImageField(_("Image"), upload_to="brand/image", null=True)
+    image = models.ImageField(_("Image"), upload_to="brand/image", blank=True, null=True)
 
     class Meta:
         verbose_name = _("Brand")
@@ -40,7 +40,7 @@ class Product (models.Model) :
     name = models.CharField(_("Name"), max_length=150)
     slug = models.SlugField(_("Slug"), db_index=True, unique=True)
     details = models.TextField(_("Details"), null=True, blank=True)
-    image = models.ImageField(_("Image"), upload_to="product/main_image", null=True)
+    image = models.ImageField(_("Image"), upload_to="product/main_image", blank=True, null=True)
     brand = models.ForeignKey(Brand, verbose_name=_("Brand"), on_delete=models.SET_NULL, null=True, blank=True)
     category = models.ForeignKey(Category, verbose_name=_("Category"), on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -56,6 +56,9 @@ class ProductMeta(models.Model):
     value = models.CharField(_("Value"), max_length=100)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name=_("Product"))
 
+    def __str__(self):
+        return self.label
+
 
 class ShopProduct (models.Model) :
     price = models.IntegerField(_("Price"))
@@ -66,6 +69,9 @@ class ShopProduct (models.Model) :
     class Meta:
         verbose_name = _("Shop Product")
         verbose_name_plural = _("Shop Products")
+
+    def __str__(self):
+        return str(self.price)
 
 
 class Image (models.Model) :
@@ -102,13 +108,3 @@ class Comment (models.Model) :
     # @property
     # def dislike_count(self):
     #     return Comment_like.objects.filter(comment=self, status=False).count()
-
-
-class off (models.Model):
-    pass
-
-    class Meta:
-        pass
-
-    def __str__(self):
-        pass

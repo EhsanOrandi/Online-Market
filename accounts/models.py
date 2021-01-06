@@ -1,8 +1,8 @@
 from django.contrib import auth
-from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
+from django.core.mail import send_mail
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
@@ -73,7 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _('Users')
 
     def __str__(self):
-        self.get_full_name()
+        return self.email
 
 
 class Email(models.Model):
@@ -86,7 +86,7 @@ class Email(models.Model):
         verbose_name_plural = _("Emails")
 
     def __str__(self):
-        return self.to
+        return self.subject
 
 
 class Address(models.Model):
@@ -107,7 +107,7 @@ class Shop(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(_("Name"), max_length=150, unique=True, db_index=True)
     slug = models.SlugField(_("Slug"), db_index=True, unique=True)
-    description = models.TextField(_("Description"))
+    description = models.TextField(_("Description"), null=True, blank=True)
     image = models.ImageField(_("Image"), upload_to="shop/image", null=True, blank=True)
 
     class Meta:
