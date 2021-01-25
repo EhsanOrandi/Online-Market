@@ -1,0 +1,272 @@
+html, body{
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    background-color: #EAECEE;;
+}
+
+@font-face {
+    font-family: nazanin;
+    src: url(../fonts/Far_Nazanin.ttf);
+}
+
+@font-face {
+    font-family: yekan;
+    src: url(../fonts/Far_Yekan.ttf);
+}
+
+@keyframes change-background-color {
+    from {background-color: #EBF5FB; color: blue;}
+    to {background-color: #F4ECF7; color: red;}
+}
+
+#stripe{
+    background-color: #EBF5FB;
+    color: blue;
+    /* background-color: #e3f2fd; */
+    font-family: yekan;
+    animation-name: change-background-color;
+    animation-duration: 0.1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+    
+.navbar i{
+    font-size: 16pt;
+    color: darkgreen;
+}
+
+.header{
+    background-color: #e3f2fd;
+    font-family: yekan;
+}
+
+#menu{
+    background-color: rgb(36,163,181);
+}
+
+.list-group-item{
+    background-color: rgb(36,163,181);
+    font-family: yekan;
+    border: none;
+}
+
+.list-group-item a{
+    color: white;
+    text-decoration: none;
+}
+
+.list-group-item:hover{
+    background-color: rgb(0,163,220);
+    color: tomato;
+}
+
+a{
+    text-decoration: none !important;
+}
+
+::placeholder{
+    font-size: small;
+}
+
+h4{
+    font-family: nazanin;
+    font-weight: bolder;
+    color: magenta;
+    text-align: right;
+    direction: rtl;
+}
+
+.categories{
+    margin: 5%;
+}
+
+.hvrbox,
+.hvrbox * {
+    box-sizing: border-box;
+}
+
+.hvrbox {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    width: 150px !important;
+    margin-right: 6%;
+    margin-bottom: 6%;
+    transform: rotate(45deg);
+    border: 1px solid cadetblue;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+.hvrbox .hvrbox-layer_bottom {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    transform: rotate(-45deg) scale(1.4);
+}
+
+.hvrbox .hvrbox-layer_top {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.5);
+    color: #ffffff  ;
+    font-weight: bolder;
+    padding: 15px;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    -webkit-transition: all 0.4s ease-in-out 0s;
+    -ms-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
+}
+
+.hvrbox:hover .hvrbox-layer_top,
+.hvrbox.active .hvrbox-layer_top {
+    opacity: 1;
+}
+
+.hvrbox .hvrbox-text {
+    text-align: center;
+    font-size: 25px;
+    font-family: yekan;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translate(-50%, -50%) rotate(-45deg);
+    -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+    -ms-transform: translate(-50%, -50%) rotate(-45deg);
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.hvrbox .hvrbox-text_mobile {
+    font-size: 15px;
+    border-top: 1px solid rgb(179, 179, 179);
+    /* for old browsers */
+    border-top: 1px solid rgba(179, 179, 179, 0.7);
+    margin-top: 5px;
+    padding-top: 2px;
+    display: none;
+}
+
+.hvrbox.active .hvrbox-text_mobile {
+    display: block;
+}
+
+.hvrbox .hvrbox-layer_rotate {
+    border-radius: 50%;
+    -moz-transform: rotateZ(0);
+    -webkit-transform: rotateZ(0);
+    -ms-transform: rotateZ(0);
+    transform: rotateZ(0);
+}
+
+.hvrbox:hover .hvrbox-layer_rotate,
+.hvrbox.active .hvrbox-layer_rotate {
+    border-radius: 0%;
+    -moz-transform: rotateZ(360deg);
+    -webkit-transform: rotateZ(360deg);
+    -ms-transform: rotateZ(360deg);
+    transform: rotateZ(360deg);
+}
+
+.container{
+    background-color: #e3f2fd;
+    padding-top: 2%;
+}
+
+.container>div{
+    background-color: #ffffff;
+}
+
+.categories{
+    background-color: transparent !important;
+    font-family: yekan;
+}
+
+.card-img-top{
+    width: 190px;
+    height: 190px;
+}
+
+.card-deck>a:hover{
+    box-shadow: 0 0 10px lightgray;
+}
+
+.card-title{
+    font-family: yekan;
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+.card-text{
+    font-family: yekan;
+    font-weight: bold;
+    color: red;
+}
+
+.footer{
+    background-color: gainsboro;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.footer .container{
+    background-color: honeydew !important;
+    padding-top: 1% !important;
+}
+
+#about{
+    font-family: nazanin;
+    line-height: 36px;
+}
+
+.features div span{
+    font-family: yekan;
+    font-size: 9pt;
+}
+
+.features div i{
+    font-size: 36pt;
+    color: rgb(100,100,100);
+}
+
+#contact-info{
+    font-family: nazanin;
+    font-size: 13pt;
+}
+
+#contact-info p{
+    margin-bottom: 4%;
+}
+
+.send-notif{
+    font-family: yekan;
+    font-size: 11pt;
+}
+
+#social-media, #secure-payment{
+    font-family: yekan;
+    font-size: 11pt;
+}
+
+#social-media-icons i{
+    font-size: 25pt;
+}
+
+#secure-payment-images img{
+    width: 25%;
+    height: 25%;
+    margin-bottom: 2%;
+}
+
+.rights-reserved{
+    font-family: yekan;
+    font-size: smaller;
+}

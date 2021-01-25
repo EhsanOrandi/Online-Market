@@ -10,7 +10,7 @@ class Category (models.Model) :
     name = models.CharField(_("Name"), max_length=125)
     slug = models.SlugField(_("Slug"), unique=True, db_index=True)
     details = models.TextField(_("Details"), null=True, blank=True)
-    image = models.ImageField(_("Image"), upload_to='categoty/image', blank=True, null=True)
+    image = models.ImageField(_("Image"), upload_to='category/image', blank=True, null=True)
     parent = models.ForeignKey('self', verbose_name=_("Parent"), on_delete=models.SET_NULL, null=True, blank=True, related_name='children', related_query_name='children')
     
 
@@ -19,7 +19,7 @@ class Category (models.Model) :
         verbose_name_plural = _("Categories")
 
     def __str__(self):
-        return self.slug
+        return self.name
 
 
 class Brand (models.Model) :
@@ -49,7 +49,7 @@ class Product (models.Model) :
         verbose_name_plural = _("Products")
 
     def __str__(self):
-        return self.slug
+        return self.name
 
 class ProductMeta(models.Model):
     label = models.CharField(_("Label"), max_length=100)
@@ -71,7 +71,7 @@ class ShopProduct (models.Model) :
         verbose_name_plural = _("Shop Products")
 
     def __str__(self):
-        return str(self.price)
+        return str(self.shop)
 
 
 class Image (models.Model) :
@@ -83,7 +83,7 @@ class Image (models.Model) :
         verbose_name_plural = _("Images")
 
     def __str__(self):
-        pass
+        return str(self.product)
 
 
 

@@ -1,0 +1,23 @@
+li{
+    list-style-type: none !important;
+    text-align: right;
+    font-family: yekan;
+    line-height: 50px;
+}
+
+#carouselExampleCaptions span{
+    color: black !important;
+    background-color: khaki !important;
+}
+
+.carousel-container{
+    border-radius: 15px;
+    border: 1px solid lightgray;
+    margin-bottom: 5%;
+}
+
+.details{
+    font-family: nazanin;
+    text-align: justify;
+    padding: 1% 4%;
+}
