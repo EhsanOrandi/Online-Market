@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'static/css/profile.css' %}">
+{% endblock %}
+{%  block title %}
+      Profile
+{% endblock %}
+
+{% block body %}
+    <div class="container my-5 pt-1">
+        <p class="personal-info text-right">اطلاعات کاربری</p>
+        <div class="row">
+            <div class="avatar col-3 rounded-circle">
+                <img src="{{user.avatar.url}}" class="rounded-circle col-12 mt-4" width="200" height="200" alt="{{user.get_full_name}}">
+                <button class="btn btn-outline-info col-12 mt-5 rounded"><a href="{% url 'update-profile' user.id %}">ویرایش اطلاعات</a></button>
+            </div>
+            <div class="col-8">
+                <table class="table table-borderless text-right mr-5">
+                    <tbody>
+                        <tr class="d-flex">
+                            <td class="col-3">نام :</td>
+                            <td class="col-8">{{user.first_name}}</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3">نام خانوادگی :</td>
+                            <td class="col-8">{{user.last_name}}</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3">ایمیل :</td>
+                            <td class="col-8">{{user.email}}</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3">تلفن همراه :</td>
+                            <td class="col-8">{{user.mobile}}</td>
+                        </tr>
+                        <tr class="d-flex">
+                            <td class="col-3">آدرس</td>
+                            <td class="col-8">
+                                {% for item in address %}
+                                    <p>{{item.city}} - {{item.street}} - {{item.alley}} (کد پستی : {{item}})</p>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mr-5">
+                    {% if shops %}
+                <p class="text-right">{{user.first_name}} عزیز، شما فروشگاه (های) زیر را در به شاپ ثبت نموده اید </p>
+                <ul class="text-right">
+                {% for shop in shops %}
+                <li><a href="#">{{shop}}</a></li>
+                {% endfor %}
+                </ul>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

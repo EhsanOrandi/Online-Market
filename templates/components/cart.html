@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'static/css/cart.css' %}">
+{% endblock %}
+{%  block title %}
+      Cart
+{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <table class="table text-center">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">ردیف</th>
+                <th scope="col">نام کالا</th>
+                <th scope="col">تعداد</th>
+                <th scope="col">قیمت واحد (تومان)</th>
+                <th scope="col">قیمت کل (تومان)</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in order_items %}
+              <tr id="{{item.shop_product.product.id}}">
+                <td scope="row"></td>
+                <td>{{item.shop_product.product}}</td>
+                <td><input type="number" name="count" id="count" min="1" max="{{item.shop_product.quantity}}" value="{{item.count}}"></td>
+                <td id="unit-price{{item.shop_product.product.id}}">{{item.price}}</td>
+                <td id="total-price{{item.shop_product.product.id}}">{{item.price}}</td>
+                <td><a href="{% url 'delete-item' user.id %}" onclick="delete_item({{item.shop_product.product.id}})"><i class="fas fa-trash"></i></a></td>
+              </tr>  
+              {% endfor %}     
+            </tbody>
+          </table>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+      $("input[type='number']").change(function(){
+        var product_id = $(this).parent().parent().attr("id")
+        var count = $(this).val()
+        var unit_price = $(`#unit-price${product_id}`).html()
+        var total_price = Number(count) * Number(unit_price)
+        $(`#total-price${product_id}`).text(total_price)
+      })
+
+      function delete_item(product_id){
+        $(`#${product_id}`).hide()
+      }
+    </script>
+{% endblock %}

@@ -35,7 +35,7 @@ BehShop
     <div class="row justify-content-center categories">
         {% for category in categories %}
         <div class="hvrbox">
-            <a href="#">
+            <a href="{% url 'category_single' category.slug %}">
                 <img src="{{category.image.url}}" alt="{{category.name}}" class="hvrbox-layer_bottom">
                 <div class="hvrbox-layer_top hvrbox-layer_rotate">
                     <div class="hvrbox-text">{{category.name}}</div>

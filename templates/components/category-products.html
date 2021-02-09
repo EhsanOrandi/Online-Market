@@ -1,0 +1,96 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'static/css/category-products.css' %}">
+{% endblock %}
+{% block title %}
+{{ product_list.0.category }}
+{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="sidebar col-3 my-4 mx-3">
+        <div class="rounded bg-light mb-3">
+            <span class="sidebar-titles">دسته بندی محصولات</span>
+            <p class="sidebar-content">{{product_list.0.category}}</p>
+        </div>
+        <div class="rounded bg-light mb-3">
+            <span class="sidebar-titles">جستجوی محصول</span>
+            <div class="sidebar-content sidebar-search">
+                <input type="search" name="search-product" class="w-75" id="search-product">
+                <button class="btn btn-light" id="search-product-btn"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+        <div class="rounded bg-light">
+            <span class="sidebar-titles">برند محصول</span>
+            <div class="sidebar-content">
+                {% for brand in brands %}
+                <input type="radio" id="{{brand}}" name="brand" value="{{brand}}">
+                <label for="{{brand}}">{{brand}}</label><br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-4 mx-auto bg-light products-container">
+            {% for product in product_list %}
+            <div class="col {{product.brand}}">
+                <a href="{% url 'product_single' product.slug %}">
+                    <div class="card h-100 text-center border-top-0 border-bottom-0 border-left-0 rounded-0">
+                        <img src="{{product.image.url}}" class="card-img-top mx-auto mt-1" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <p class="card-text">{{product.shop_product.all.first.price}}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block javascript %}
+    <script>
+        // $(document).ready(function () {
+        //     $("input[type='button']").click(function () {
+        //         var radioValue = $("input[name='brand']:checked").val();
+        //         if (radioValue) {
+
+        //         }
+        //     });
+        // });
+
+        $("input").on("click", function () {
+            $('.products-container > div').each(function () {
+                if (!$(this).attr('class').includes($("input:checked").val())) {
+                    console.log('yes')
+                    $(this).hide()
+                }
+            })
+        });
+
+        $('#search-product-btn').click(function () {
+            var search_text = $('#search-product').val()
+            console.log(search_text)
+            $('.products-container > div').each(function () {
+                if ($(this).attr('class').includes(search_text) || $(this).children('h5').text().includes(search_text)) {
+                    console.log('yes')
+                } else {
+                    $(this).hide()
+                }
+            })
+        })
+
+        // var x;
+            // var test =  $(".product-container").children()
+            // for (x in test){
+            //     var class_value = x.attr("class")
+            //     if(class_value != $( "input:checked" ).val()){
+            //         $('div.'+ class_value).hide()
+            //     }
+            // }
+
+            // console.log(test)
+    </script>
+    {% endblock %}

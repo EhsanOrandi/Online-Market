@@ -4,7 +4,7 @@
 </div>
 <nav class="navbar navbar-light header">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="{% static 'static/images/logonomy-1609947608908-removebg-preview.png' %}" alt=""></a>
+        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'static/images/logonomy-1609947608908-removebg-preview.png' %}" alt=""></a>
         <div class="input-group w-50">
             <input type="search" class="form-control rounded" placeholder="جستجو در به شاپ" aria-label="Search"
                 aria-describedby="basic-addon2">
@@ -12,9 +12,22 @@
                 <button class="btn btn-outline-warning me-2" type="button">جستجو</button>
             </div>
         </div>
-        <div class="ml-5">
-            <a href="#" class="mx-3"><i class="fa fa-user"></i></a>
-            <a href="#" class="mx-3"><i class="fa fa-shopping-cart"></i></a>
+        <div class="ml-5 row">
+            {% if request.user.is_authenticated %}
+            <div class="dropdown show col-8">
+                <span class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-user"></i>
+                  <small>{{user.get_full_name}}</small>
+                </span>
+                <div class="dropdown-menu text-right" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item border-bottom" href="{% url 'profile' user.id %}">پروفایل من</a>
+                  <a class="dropdown-item" href="{% url 'logout' %}">خروج</a>
+                </div>
+              </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="col-6 py-2"><i class="fa fa-user"></i></a>
+            {% endif %}
+            <a href="{% url 'cart' user.id %}" class="col-3 py-2"><i class="fa fa-shopping-cart"></i></a>
         </div>
     </div>
 </nav>

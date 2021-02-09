@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'static/css/product-single.css' %}">
+<link rel="stylesheet" href="{% static 'static/css/product-single.css' %}">
 {% endblock %}
 {% block title %}
 {{ product.name }}
@@ -10,14 +10,16 @@
 
 <div class="container">
     <div>
-        <h3>{{product.name}}</h3>
-        <div class="row justify-content-around">
+        <div class="text-right mx-3 product-name">
+            <h3>{{product.name}}</h3>
+        </div>
+        <div class="row justify-content-around" id="main">
             <div class="col-4 carousel-container">
                 <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
                     <ol class="carousel-indicators">
                         {% for image in images %}
-                        <li data-target="#carouselExampleCaptions" data-slide-to="{{forloop.counter0}}" {% if forloop.first %}
-                            class="active" {% endif %}></li>
+                        <li data-target="#carouselExampleCaptions" data-slide-to="{{forloop.counter0}}" 
+                        {% if forloop.first %} class="active" {% endif %}></li>
                         {% endfor %}
                     </ol>
                     <div class="carousel-inner">
@@ -37,25 +39,155 @@
                     </a>
                 </div>
             </div>
-            <div class="col-3">
-                <ul>
-                    <li>برند : {{product.brand}}</li>
+            <div class="col-3 p-0">
+                <ul class="text-right px-0">
+                    <li >برند : {{product.brand}}</li>
                     <li>دسته بندی : {{product.category}}</li>
-                    <li>فروشنده : {{seller}}</li>
+                    {% if seller.quantity > 0 %}
+                    <li>فروشنده : <a href="{% url 'shop_single' seller.shop.slug %}">{{seller}}</a></li>
+                    {% endif %}
                 </ul>
             </div>
             <div class="col-3">
-                <div>
-                    <p>قیمت فروشنده</p>
-                    <p>تومان  {{seller.price}}</p>
+                <div class="sell-details">
+                    {% if seller.quantity > 0 %}
+                    <div class="text-right">
+                        <p class="mb-0">موجود در انبار فروشنده</p>
+                        <small class="text-muted"><a href="{% url 'shop_single' seller.shop.slug %}">{{seller}}</a></small>
+                    </div>
+                    <hr>
+                    <div class="text-right">
+                        <p class="mb-0">ارسال توسط فروشنده </p>
+                        <small class="text-muted"><a href="{% url 'shop_single' seller.shop.slug %}">{{seller}}</a></small>
+                    </div>
+                    <hr>
+                    <p class="text-right">قیمت فروشنده</p>
+                    <p class="product-price">{{seller.price}} تومان</p>
+                    <button class="add-to-cart w-100" onclick="add_to_order({{product.id}} , {{seller.id}} , {{seller.price}} )">افزودن به سبد خرید</button>
+                    {% else %}
+                    <button class="btn btn-secondary w-100">نا موجود</button>
+                    {% endif %}
                 </div>
-                <button>افزودن به سبد خرید</button>
             </div>
         </div>
     </div>
-    <div class="details">
-        <h5>درباره {{product.name}}</h5>
-        <p>{{product.details}}</p>
+    <div class="shops">
+        {% if seller.quantity > 0 %}
+        <div class="text-right mx-3">
+            <h5>لیست فروشندگان {{product.name}}</h5>
+        </div>
+        {% endif %}
+        <table class="table table-borderless">
+            <tbody>
+                {% for shop in shops %}
+                {% if shop.quantity > 0 %}
+                <tr class="d-flex border rounded my-2 mx-4">
+                    <td class="col-4 text-center"><a href="{% url 'shop_single' shop.shop.slug %}">{{shop.shop}}</a></td>
+                    <td class="col-4 text-center">{{shop.price}} تومان</td>
+                    <td class="col-4"><button class="btn btn-outline-danger">افزودن به سبد خرید</button></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#details">توضیحات</a></li>
+        <li><a data-toggle="tab" href="#info">مشخصات</a></li>
+        <li><a data-toggle="tab" href="#comments">دیدگاه کاربران</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="details" class="tab-pane active">
+            <h3>درباره {{product.name}}</h3>
+            <p>{{product.details}}</p>
+        </div>
+        <div id="info" class="tab-pane fade">
+            <h3>مشخصات {{product.name}}</h3>
+            <table class="table table-borderless mr-5">
+                <tbody>
+                    {% for item in info %}
+                    <tr class="d-flex">
+                        <td class="col-3">{{item.label}}</td>
+                        <td class="col-8">{{item.value}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="comments" class="tab-pane fade">
+            <div >
+                <!-- <form id="comment_form"> -->
+                    
+                    <div class="form-group">
+                        <label for="comment-body"></label>
+                        <textarea class="form-control" id="comment-body" rows="4" placeholder="دیدگاه خود را بیان کنید"></textarea>
+                    </div>
+                    <button id="submit-comment" onclick="add_comment()" class="btn btn-outline-info">افزودن دیدگاه</button>
+                <!-- </form> -->
+            </div>
+            
+            <div class="comments-container">
+               {% for comment in comments %}
+                <div class="row">
+                    <div class="col-3">
+                    <span>{{comment.user.first_name}} {{comment.user.last_name}}</span><br>
+                    <span>در تاریخ : {{comment.created_at|date:"d/m/Y"}}</span><br>
+                    <span>امتیاز : {{comment.rate}}</span>
+                </div>
+                <div class="col-9">
+                    {{comment.text}}
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </div>
+
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    function add_comment(){
+        var comment = $.trim($("#comment-body").val());
+        console.log(comment)
+        const data = JSON.stringify({comment, product_id:{{product.id}}})
+        $.ajax({
+            type: "post",
+            url: "{% url 'add_comment' %}",
+            data: data,
+            success: function (response) {
+                const data = JSON.parse(response);
+                $(".comments-container").prepend(`
+                <div class="row">
+                    <div class="col-3">
+                    <span>${data.full_name}</span><br>
+                    <span>امتیاز : ${data.rate}</span>
+                    </div>
+                <div class="col-9">
+                    ${data.text}
+                </div>
+            </div>
+                `)
+            }
+        });
+    };
+
+    function add_to_order(product_name, shop_product_name, product_price){
+        const data = JSON.stringify({product_name:product_name, shop_name:shop_product_name, product_price:product_price})
+        console.log(data)
+        $.ajax({
+            type: "post",
+            url: "{% url 'add_to_order' %}",
+            data: data,
+            success: function(response){
+                // const data = JSON.parse(response)
+                console.log(response)
+            }
+        })
+    }
+
+</script>
 {% endblock %}
