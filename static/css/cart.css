@@ -1,0 +1,12 @@
+body
+{
+    /* for table auto increment  */
+    counter-reset: Count-Value;    
+}
+
+tr td:first-child:before
+{
+    /* for table auto increment  */
+  counter-increment: Count-Value;   
+  content: counter(Count-Value);
+}

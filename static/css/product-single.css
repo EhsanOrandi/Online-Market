@@ -1,6 +1,13 @@
-li{
+.product-name{
+    font-family: yekan;
+}
+
+#main *{
+    font-family: yekan;
+}
+
+#main div ul li{
     list-style-type: none !important;
-    text-align: right;
     font-family: yekan;
     line-height: 50px;
 }
@@ -16,8 +23,52 @@ li{
     margin-bottom: 5%;
 }
 
-.details{
+.sell-details{
+    padding: 5% 5% ;
+    border: 1px solid lavender;
+    border-radius: 10px;
+    background-color: rgba(230, 230, 230, 0.5);
+}
+
+.product-price{
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.add-to-cart{
+    margin: auto;
+    background-color: rgba(255, 0, 0, 0.8);
+    border: 1px solid rgba(255, 0, 0, 0.8);
+    border-radius: 6px;
+    font-family: yekan;
+    font-size: larger;
+    padding: 2% 0;
+    color: white;
+}
+
+.shops *{
+    font-family: nazanin;
+}
+
+.nav-tabs li{
+    margin: auto 0 auto 2%;
+}
+
+.nav-tabs .active{
+    color: blue;
+}
+
+.nav-tabs a{
+    font-family: yekan;
+    color: red;
+}
+
+.tab-content div{
     font-family: nazanin;
     text-align: justify;
     padding: 1% 4%;
+}
+
+#comments .row .col-3{
+    border-left: 1px solid lightgray;
 }

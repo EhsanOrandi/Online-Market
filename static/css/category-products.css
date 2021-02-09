@@ -1,0 +1,31 @@
+.sidebar div{
+    text-align: right;
+    direction: rtl;
+}
+
+.sidebar-titles{
+    font-family: yekan;
+    font-size: large;
+    margin: 5%;
+    padding-bottom: 2%;
+    border-bottom: 2.5px solid rgb(36,163,181);
+}
+
+.sidebar-content{
+    margin: 4% 5% 3%;
+    font-family: nazanin;
+}
+
+.sidebar-search{
+    padding-bottom: 5%;
+}
+
+.sidebar-search input{
+    border-radius: 7%;
+    border: 1px solid rgb(36,163,181);
+    padding-right: 3%;
+}
+
+.about-shop *{
+    font-family: yekan;
+}
