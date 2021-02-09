@@ -11,7 +11,7 @@ class Order(models.Model) :
     user = models.ForeignKey(User, verbose_name=_("user"), on_delete=models.CASCADE)
     create_at = models.DateTimeField(_("Create At"), auto_now_add=True)
     updated_at = models.DateTimeField(_("Update At"), auto_now=True)
-    description = models.CharField(_("Description"), max_length=150)
+    description = models.CharField(_("Description"), max_length=150, default="Test")
 
     class Meta:
         verbose_name = _("Order")
