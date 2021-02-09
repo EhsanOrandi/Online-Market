@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _     # for making app mul
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 User = get_user_model()
 
 # Create your models here.
@@ -47,6 +48,7 @@ class Product (models.Model) :
     class Meta:
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
+    
 
     def __str__(self):
         return self.name
@@ -69,6 +71,7 @@ class ShopProduct (models.Model) :
     class Meta:
         verbose_name = _("Shop Product")
         verbose_name_plural = _("Shop Products")
+        unique_together = [('shop', 'product')]
 
     def __str__(self):
         return str(self.shop)

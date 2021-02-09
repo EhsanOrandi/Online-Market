@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Brand, Product, ShopProduct, Comment, Image
+from .models import Category, Brand, Product, ShopProduct, Comment, Image, ProductMeta
 
 # Register your models here.
 
@@ -18,12 +18,15 @@ class BrandAdmin(admin.ModelAdmin):
 class ImageItemInline(admin.TabularInline):
     model = Image
 
+class ProductMetaItemInline(admin.TabularInline):
+    model = ProductMeta
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'brand', 'category')
     search_fields = ('name', 'slug')
     list_filter = ('brand', 'category')
-    inlines = [ImageItemInline,]
+    inlines = [ImageItemInline, ProductMetaItemInline]
 
 
 @admin.register(ShopProduct)
