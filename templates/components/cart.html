@@ -28,7 +28,7 @@
                 <td><input type="number" name="count" id="count" min="1" max="{{item.shop_product.quantity}}" value="{{item.count}}"></td>
                 <td id="unit-price{{item.shop_product.product.id}}">{{item.price}}</td>
                 <td id="total-price{{item.shop_product.product.id}}">{{item.price}}</td>
-                <td><a href="{% url 'delete-item' user.id %}" onclick="delete_item({{item.shop_product.product.id}})"><i class="fas fa-trash"></i></a></td>
+                <td><a href="{% url 'delete-item' item.id %}" onclick="delete_item({{item.shop_product.product.id}})"><i class="fas fa-trash"></i></a></td>
               </tr>  
               {% endfor %}     
             </tbody>

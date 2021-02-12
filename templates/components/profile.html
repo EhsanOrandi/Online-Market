@@ -12,7 +12,11 @@
         <p class="personal-info text-right">اطلاعات کاربری</p>
         <div class="row">
             <div class="avatar col-3 rounded-circle">
+                {% if user.avatar %}
                 <img src="{{user.avatar.url}}" class="rounded-circle col-12 mt-4" width="200" height="200" alt="{{user.get_full_name}}">
+                {% else %}
+                <img src="{% static 'static/images/profile-default.png' %}" class="rounded-circle col-12 mt-4" width="200" height="200" alt="{{user.get_full_name}}">
+                {% endif %}
                 <button class="btn btn-outline-info col-12 mt-5 rounded"><a href="{% url 'update-profile' user.id %}">ویرایش اطلاعات</a></button>
             </div>
             <div class="col-8">

@@ -29,19 +29,13 @@
             <span class="sidebar-titles">جستجوی محصول</span>
             <div class="sidebar-content sidebar-search">
                 <input type="search" name="search-product" class="w-75" id="search-product">
-                <button class="btn btn-light" id="search-product-btn"><i class="fa fa-search"></i></button>
-            </div>
-        </div>
-        <div class="rounded bg-light">
-            <span class="sidebar-titles">برند محصول</span>
-            <div class="sidebar-content">
             </div>
         </div>
     </div>
     <div class="col-8">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-1 mx-auto bg-light products-container">
             {% for product in products %}
-            <div class="col">
+            <div class="col {{product.product.brand}}" id="{{product.product.name}}">
                 <a href="{% url 'product_single' product.product.slug %}">
                     <div class="card h-100 text-center border-top-0 border-bottom-0 border-left-0 rounded-0">
                         <img src="{{product.product.image.url}}" class="card-img-top mx-auto mt-1" alt="...">
@@ -60,45 +54,19 @@
 
     {% block javascript %}
     <script>
-        // $(document).ready(function () {
-        //     $("input[type='button']").click(function () {
-        //         var radioValue = $("input[name='brand']:checked").val();
-        //         if (radioValue) {
 
-        //         }
-        //     });
-        // });
+        $(document).ready(function(){
+            $("#search-product").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".products-container > div").filter(function() {
+                    display = false
+                    if ($(this).attr('class').includes(value) || $(this).attr('id').includes(value)){
+                        display = true
+                    }
+                    $(this).toggle(display)
+            });
+        });
+        });
 
-        // $("input").on("click", function () {
-        //     $('.products-container > div').each(function () {
-        //         if (!$(this).attr('class').includes($("input:checked").val())) {
-        //             console.log('yes')
-        //             $(this).hide()
-        //         }
-        //     })
-        // });
-
-        // $('#search-product-btn').click(function () {
-        //     var search_text = $('#search-product').val()
-        //     console.log(search_text)
-        //     $('.products-container > div').each(function () {
-        //         if ($(this).attr('class').includes(search_text) || $(this).children('h5').text().includes(search_text)) {
-        //             console.log('yes')
-        //         } else {
-        //             $(this).hide()
-        //         }
-        //     })
-        // })
-
-        // var x;
-            // var test =  $(".product-container").children()
-            // for (x in test){
-            //     var class_value = x.attr("class")
-            //     if(class_value != $( "input:checked" ).val()){
-            //         $('div.'+ class_value).hide()
-            //     }
-            // }
-
-            // console.log(test)
     </script>
     {% endblock %}

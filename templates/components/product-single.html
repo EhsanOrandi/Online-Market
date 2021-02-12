@@ -39,10 +39,12 @@
                     </a>
                 </div>
             </div>
-            <div class="col-3 p-0">
-                <ul class="text-right px-0">
+            <div class="col-3 p-0 text-right">
+                <span>امتیاز {{average_rate}} از ۵</span><br>
+                <a href="#details"><small>{{comments_count}} دیدگاه کاربران</small></a>
+                <ul class="px-0">
                     <li >برند : {{product.brand}}</li>
-                    <li>دسته بندی : {{product.category}}</li>
+                    <li>دسته بندی : <a href="{% url 'category_single' product.category.slug %}">{{product.category}}</a></li>
                     {% if seller.quantity > 0 %}
                     <li>فروشنده : <a href="{% url 'shop_single' seller.shop.slug %}">{{seller}}</a></li>
                     {% endif %}
@@ -116,15 +118,20 @@
             </table>
         </div>
         <div id="comments" class="tab-pane fade">
-            <div >
-                <!-- <form id="comment_form"> -->
-                    
-                    <div class="form-group">
-                        <label for="comment-body"></label>
-                        <textarea class="form-control" id="comment-body" rows="4" placeholder="دیدگاه خود را بیان کنید"></textarea>
+            <div >                    
+                <div class="form-group">
+                    <label for="comment-body"></label>
+                    <textarea class="form-control" id="comment-body" rows="4" placeholder="دیدگاه خود را بیان کنید"></textarea>
+                    <div class="comment-rate-form">
+                        <span>امتیاز شما به این کالا :</span>
+                        <span class="fa fa-star star-1" onclick="comment_rate(1)"></span>
+                        <span class="fa fa-star star-2" onclick="comment_rate(2)"></span>
+                        <span class="fa fa-star star-3" onclick="comment_rate(3)"></span>
+                        <span class="fa fa-star star-4" onclick="comment_rate(4)"></span>
+                        <span class="fa fa-star star-5" onclick="comment_rate(5)"></span>
                     </div>
-                    <button id="submit-comment" onclick="add_comment()" class="btn btn-outline-info">افزودن دیدگاه</button>
-                <!-- </form> -->
+                </div>
+                <button id="submit-comment" onclick="add_comment()" class="btn btn-outline-info">افزودن دیدگاه</button>
             </div>
             
             <div class="comments-container">
@@ -133,10 +140,18 @@
                     <div class="col-3">
                     <span>{{comment.user.first_name}} {{comment.user.last_name}}</span><br>
                     <span>در تاریخ : {{comment.created_at|date:"d/m/Y"}}</span><br>
-                    <span>امتیاز : {{comment.rate}}</span>
+                    <span>امتیاز : {{comment.rate}} از ۵</span>
                 </div>
                 <div class="col-9">
                     {{comment.text}}
+                    <div class="mb-0 pb-0 col-12 row justify-content-end">
+                        <span class="text-muted text-left col-5 p-0 m-0">آیا این دیدگاه برایتان مفید بود؟</span>
+                        <p class="col-2"><button class="bg-transparent border-0 text-muted"
+                            onclick="likeComment({{comment.id}}, {{forloop.counter}})"><span
+                                class="text-muted"
+                                id="like_count_container{{forloop.counter}}">{{comment.like_count}}</span>
+                                <i class="fas fa-thumbs-up"></i></button></p>
+                    </div>
                 </div>
                 </div>
                 {% endfor %}
@@ -150,10 +165,43 @@
 
 {% block javascript %}
 <script>
+
+    function likeComment(CommentID, index, status = true) {
+        data = JSON.stringify({ comment_id: CommentID, status })
+        $.ajax({
+            type: "post",
+            url: "{% url 'like_comment' %}",
+            data: data,
+            success: function (response) {
+                response = JSON.parse(response)
+                $(`#like_count_container${index}`).text(response['like_count'])
+            }
+        })
+    }
+
+    function comment_rate(rate){
+        let i = 1
+        while(i<=rate){
+            $(`.star-${i}`).addClass('checked')
+            i++
+        }
+    }
+
+    function get_comment_rate(){
+        let rate = 0
+        $('.comment-rate-form .fa-star').each(function(){
+            if ($(this).hasClass('checked')){
+                rate++
+            }
+        })
+        return rate
+    }
+
     function add_comment(){
         var comment = $.trim($("#comment-body").val());
-        console.log(comment)
-        const data = JSON.stringify({comment, product_id:{{product.id}}})
+        var rate = get_comment_rate()
+        console.log(rate)
+        const data = JSON.stringify({comment, rate, product_id:{{product.id}}})
         $.ajax({
             type: "post",
             url: "{% url 'add_comment' %}",
@@ -164,7 +212,7 @@
                 <div class="row">
                     <div class="col-3">
                     <span>${data.full_name}</span><br>
-                    <span>امتیاز : ${data.rate}</span>
+                    <span>امتیاز : ${data.rate} از ۵</span>
                     </div>
                 <div class="col-9">
                     ${data.text}

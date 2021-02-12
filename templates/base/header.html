@@ -24,10 +24,13 @@
                   <a class="dropdown-item" href="{% url 'logout' %}">خروج</a>
                 </div>
               </div>
+              <a href="{% url 'cart' user.id %}" class="col-3 py-2"><i class="fa fa-shopping-cart"></i></a>
             {% else %}
-            <a href="{% url 'login' %}" class="col-6 py-2"><i class="fa fa-user"></i></a>
+            <a href="{% url 'login' %}" class="py-2">
+                <i class="fa fa-user"></i>
+                <span>ورود / ثبت نام</span>
+            </a>
             {% endif %}
-            <a href="{% url 'cart' user.id %}" class="col-3 py-2"><i class="fa fa-shopping-cart"></i></a>
         </div>
     </div>
 </nav>
