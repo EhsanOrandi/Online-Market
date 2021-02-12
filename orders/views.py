@@ -5,6 +5,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.views.generic import DetailView
 from django.views.generic.edit import DeleteView
 from django.shortcuts import redirect
+from django.urls import reverse
 from products.models import ShopProduct
 
 # Create your views here.
@@ -52,4 +53,10 @@ def add_to_order(request):
 
 class DeleteItem(DeleteView):
     model = OrderItem
-    success_url = '/'
+    def get_success_url(self):
+        return reverse('cart', args = (self.object.order.id,))
+
+    # For Deleteview with post requests (not get requests)
+    # In post requests, no confirmation template is needed (in contrast to get requests)
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
