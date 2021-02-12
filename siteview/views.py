@@ -9,7 +9,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['slides'] =  SlideShow.objects.all()
-        context['categories'] = Category.objects.all()
+        context['categories'] = Category.objects.filter(parent__isnull=True)
         context['products'] = ShopProduct.objects.filter(quantity__gte=1)
         context['brands'] = Brand.objects.exclude(image='')
         return context

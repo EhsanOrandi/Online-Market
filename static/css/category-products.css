@@ -29,3 +29,7 @@
 .about-shop *{
     font-family: yekan;
 }
+
+li{
+    list-style-type: none;
+}
