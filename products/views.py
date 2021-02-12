@@ -2,7 +2,7 @@ from django.shortcuts import render
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, Http404
-from .models import ShopProduct, Product, Image, Category, Comment, ProductMeta
+from .models import ShopProduct, Product, Image, Category, Comment, ProductMeta, Comment_like
 from accounts.models import Shop
 from django.views.generic import ListView, DetailView
 # Create your views here.
@@ -19,6 +19,8 @@ class ProductSingle(DetailView):
         context['info'] = ProductMeta.objects.filter(product=product)
         context['comments'] = Comment.objects.filter(product=product)
         context['shops'] = ShopProduct.objects.filter(product=product)
+        context['average_rate'] = product.average_rate
+        context['comments_count'] = product.comments_count
         return context
 
 class ProductsList(ListView):
@@ -35,9 +37,26 @@ class ProductsList(ListView):
         brands = list()
         for product in context['product_list']:
             brands.append(product.brand)
-        print(brands)
         context['brands'] = set(brands)
         return context
+
+
+@csrf_exempt
+def likeComment(request):
+    data = json.loads(request.body)
+    try:
+        comment = Comment.objects.get(id=data['comment_id'])
+    except Comment.DoesNotExist:
+        return HttpResponse("No such comment found!", status=404)
+    try:
+        comment_like = Comment_like.objects.get(user=request.user, comment=comment)
+        comment_like.status = data['status']
+        comment_like.save()
+    except Comment_like.DoesNotExist:
+        Comment_like.objects.create(user=request.user, status=data['status'], comment=comment)
+
+    result = {'like_count':comment.like_count}
+    return HttpResponse(json.dumps(result), status=201)
 
 
 @csrf_exempt
@@ -46,7 +65,7 @@ def add_comment(request):
     user = request.user
     try:
         comment = Comment.objects.create(
-            product_id=data['product_id'], text=data['comment'], rate=5, user=user)
+            product_id=data['product_id'], text=data['comment'], rate=data['rate'], user=user)
         response = {"comment_id": comment.id, "text": comment.text, "rate":comment.rate, "full_name": user.get_full_name()}
         return HttpResponse(json.dumps(response), status=201)
     except:

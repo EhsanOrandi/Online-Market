@@ -49,6 +49,18 @@ class Product (models.Model) :
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
     
+    @property
+    def average_rate(self):
+        comment_rates = Comment.objects.filter(product=self)
+        sum = 0
+        for item in comment_rates:
+            sum = sum + item.rate
+        average = sum/(comment_rates.count())
+        return round(average,2)
+    
+    @property
+    def comments_count(self):
+        return Comment.objects.filter(product=self).count()
 
     def __str__(self):
         return self.name
@@ -89,6 +101,21 @@ class Image (models.Model) :
         return str(self.product)
 
 
+class Comment_like (models.Model) :
+    status = models.BooleanField(_("Status"))
+    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
+    comment = models.ForeignKey('Comment', verbose_name=_("Comment"), on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = [['user', 'comment']]
+        verbose_name = _("Comment_like")
+        verbose_name_plural = _("Comment_likes")
+
+    def __str__(self):
+        return str(self.status)
+
 
 class Comment (models.Model) :
     text = models.TextField(_("Text"))
@@ -104,10 +131,6 @@ class Comment (models.Model) :
     def __str__(self):
         return self.text
 
-    # @property
-    # def like_count(self):
-    #     return Comment_like.objects.filter(comment=self, status=True).count()
-
-    # @property
-    # def dislike_count(self):
-    #     return Comment_like.objects.filter(comment=self, status=False).count()
+    @property
+    def like_count(self):
+        return Comment_like.objects.filter(comment=self, status=True).count()
