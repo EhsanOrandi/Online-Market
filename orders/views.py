@@ -40,7 +40,9 @@ def add_to_order(request):
     try:
         for item in order_items:
             if item.shop_product.product == shop_product.product:
+                print('aaaaaaaa')
                 item.count = item.count+1
+                item.save()
                 return HttpResponse(json.dumps(data), status=201)
         order_item = OrderItem.objects.create(
             order=order, shop_product_id=data['shop_name'], count=1, price=data['product_price']

@@ -5,6 +5,7 @@ from django.http import HttpResponse, Http404
 from .models import ShopProduct, Product, Image, Category, Comment, ProductMeta, Comment_like
 from accounts.models import Shop
 from django.views.generic import ListView, DetailView
+from django.db.models import Q
 # Create your views here.
 
 class ProductSingle(DetailView):
@@ -34,11 +35,22 @@ class ProductsList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        for item in context['product_list']:
+            test = ShopProduct.objects.filter(product=item).first()
+            print(test.price)
         brands = list()
         for product in context['product_list']:
             brands.append(product.brand)
         context['brands'] = set(brands)
         return context
+
+# class ProductsListOrder(ProductsList):    
+#     def get_queryset(self):
+#         slug = self.kwargs.get(self.slug_url_kwargs)
+#         test = set(Product.objects.filter(category__slug=slug))
+#         print(test)
+#         return Product.objects.filter(category__slug=slug).order_by('-shop_product__price')
+    
 
 
 @csrf_exempt
@@ -82,4 +94,12 @@ class ShopDetails(DetailView):
         shop = context.get('shop', None)
         context["products"] = ShopProduct.objects.filter(shop=shop) 
         return context
-    
+
+def search_page(request):
+    srh = request.GET['search']
+    products = Product.objects.filter(Q(name__icontains=srh) | Q(category__name__icontains=srh) | Q(category__parent__name__icontains=srh))
+    brands = set()
+    for product in products:
+            brands.add(product.brand)
+    params = {'products': products, 'search':srh, 'brands':brands}
+    return render(request, 'components/search-page.html', params)

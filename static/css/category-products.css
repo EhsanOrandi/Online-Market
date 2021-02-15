@@ -33,3 +33,10 @@
 li{
     list-style-type: none;
 }
+
+.not-found-alert{
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid red;
+    border-radius: 10px;
+    font-family: yekan;
+}

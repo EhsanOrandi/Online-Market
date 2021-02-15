@@ -14,10 +14,13 @@ class Category (models.Model) :
     image = models.ImageField(_("Image"), upload_to='category/image', blank=True, null=True)
     parent = models.ForeignKey('self', verbose_name=_("Parent"), on_delete=models.SET_NULL, null=True, blank=True, related_name='children', related_query_name='children')
     
-
     class Meta:
         verbose_name = _("Category")
         verbose_name_plural = _("Categories")
+
+    def get_children(self):
+        return Category.objects.filter(models.Q(parent=self) | models.Q(parent__parent=self) |
+                                       models.Q(parent__parent__parent__exact=self))
 
     def __str__(self):
         return self.name
@@ -52,10 +55,13 @@ class Product (models.Model) :
     @property
     def average_rate(self):
         comment_rates = Comment.objects.filter(product=self)
+        count = comment_rates.count()
+        if count == 0:
+            return '-'
         sum = 0
         for item in comment_rates:
             sum = sum + item.rate
-        average = sum/(comment_rates.count())
+        average = sum/count
         return round(average,2)
     
     @property
@@ -77,7 +83,7 @@ class ProductMeta(models.Model):
 class ShopProduct (models.Model) :
     price = models.IntegerField(_("Price"))
     quantity = models.IntegerField(_("Quantity"))
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='shop_product', on_delete=models.CASCADE)
     shop = models.ForeignKey('accounts.Shop', on_delete=models.CASCADE)
 
     class Meta:

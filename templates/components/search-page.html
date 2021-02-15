@@ -3,16 +3,13 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'static/css/category-products.css' %}">
 {% endblock %}
-{% block title %}
-{{ product_list.0.category }}
+{%  block title %}
+      Search
 {% endblock %}
 {% block body %}
 <div class="row">
+    {% if products %}
     <div class="sidebar col-3 my-4 mx-3">
-        <div class="rounded bg-light mb-3">
-            <span class="sidebar-titles">دسته بندی محصولات</span>
-            <p class="sidebar-content">{{product_list.0.category}}</p>
-        </div>
         <div class="rounded bg-light mb-3">
             <span class="sidebar-titles">جستجوی محصول</span>
             <div class="sidebar-content sidebar-search">
@@ -36,20 +33,23 @@
     </div>
     <div class="col-8">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-4 mx-auto bg-light products-container">
-            {% for product in product_list %}
+            {% for product in products %}
             <div class="col {{product.brand}}" id="{{product.name}}">
                 <a href="{% url 'product_single' product.slug %}">
                     <div class="card h-100 text-center border-top-0 border-bottom-0 border-left-0 rounded-0">
                         <img src="{{product.image.url}}" class="card-img-top mx-auto mt-1" alt="{{product.name}}">
                         <div class="card-body">
                             <h5 class="card-title">{{product.name}}</h5>
-                            <p class="card-text">{{product.shop_product.all.first.price}} تومان</p>
+                            <p class="card-text">{{product.shop_product.all.first.price}}</p>
                         </div>
                     </div>
                 </a>
             </div>
             {% endfor %}
         </div>
+        {% else %}
+        <div class="not-found-alert alert mx-auto my-3">متاسفانه جستجوی شما با هیچ کالایی هم‌خوانی نداشت.</div>
+        {% endif %}
     </div>
 </div>
     {% endblock %}
@@ -79,11 +79,6 @@
             });
         });
         });
-
-        $(document).ready(function(){
-            var test = $('.products-container').children()
-            console.log(test)
-        })
 
     </script>
     {% endblock %}

@@ -24,12 +24,13 @@
               {% for item in order_items %}
               <tr id="{{item.shop_product.product.id}}">
                 <td scope="row"></td>
-                <td>{{item.shop_product.product}}</td>
+                <td id="name{{item.shop_product.product.id}}">{{item.shop_product.product}}</td>
                 <td><input type="number" name="count" id="count" min="1" max="{{item.shop_product.quantity}}" value="{{item.count}}"></td>
                 <td id="unit-price{{item.shop_product.product.id}}">{{item.price}}</td>
                 <td id="total-price{{item.shop_product.product.id}}">{{item.price}}</td>
                 <td><a href="{% url 'delete-item' item.id %}" onclick="delete_item({{item.shop_product.product.id}})"><i class="fas fa-trash"></i></a></td>
               </tr>  
+              <span class="d-none" id="shop{{item.shop_product.product.id}}">{{item.shop_product.id}}</span>
               {% endfor %}     
             </tbody>
           </table>
@@ -38,13 +39,42 @@
 
 {% block javascript %}
     <script>
+    
+      $(document).ready(function(){
+        $('tbody tr').each(function(){
+          var count = $(this).children(':nth-child(3)').children('input').val()
+          var price = $(this).children(':nth-child(4)').html()
+          $(this).children(':nth-child(5)').text(Number(count)*Number(price))
+        })
+      })
+
+
       $("input[type='number']").change(function(){
         var product_id = $(this).parent().parent().attr("id")
         var count = $(this).val()
+        console.log(count)
         var unit_price = $(`#unit-price${product_id}`).html()
         var total_price = Number(count) * Number(unit_price)
         $(`#total-price${product_id}`).text(total_price)
+        var name = $(`#name${product_id}`).text()
+        console.log(name)
+        var shop = $(`#shop${product_id}`).text()
+        console.log(shop)
+        add_to_order(product_id, shop, unit_price)
       })
+
+      function add_to_order(product_name, shop_product_name, product_price){
+        const data = JSON.stringify({product_name:product_name, shop_name:shop_product_name, product_price:product_price})
+        console.log(data)
+        $.ajax({
+            type: "post",
+            url: "{% url 'add_to_order' %}",
+            data: data,
+            success: function(response){
+                console.log(response)
+            }
+        })
+      }
 
       function delete_item(product_id){
         $(`#${product_id}`).hide()

@@ -6,7 +6,7 @@
 
 {% block body %}
     <div class="container my-5">
-        <form action="{% url 'login' %}" method="post">
+        <form action="{% url 'login' %}" method="post" class="text-right">
             {% csrf_token %}
             {{ form.as_p }}
             {# % include 'components/forms.html' % #}
