@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+from .sort import filter_product
 User = get_user_model()
 
 # Create your models here.
@@ -21,6 +22,13 @@ class Category (models.Model) :
     def get_children(self):
         return Category.objects.filter(models.Q(parent=self) | models.Q(parent__parent=self) |
                                        models.Q(parent__parent__parent__exact=self))
+
+    def get_products(self, filter_value=None):
+        product_list = Product.objects.filter(models.Q(category=self) | models.Q(category__parent=self) |
+                                              models.Q(category__parent__parent=self))
+        if filter_value in ('lowest_price', 'highest_price'):
+            product_list = filter_product(filter_value, product_list)
+        return product_list
 
     def __str__(self):
         return self.name

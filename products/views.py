@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, Http404
@@ -30,27 +30,18 @@ class ProductsList(ListView):
     template_name = 'components/category-products.html'
 
     def get_queryset(self):
-        slug = self.kwargs.get(self.slug_url_kwargs)
-        return Product.objects.filter(category__slug=slug)
+        filter_value = self.request.GET.get('filter', 'Nothing')
+        category = get_object_or_404(Category, slug=self.kwargs.get('slug'))
+        self.kwargs['category'] = category
+        return category.get_products(filter_value)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        for item in context['product_list']:
-            test = ShopProduct.objects.filter(product=item).first()
-            print(test.price)
         brands = list()
         for product in context['product_list']:
             brands.append(product.brand)
         context['brands'] = set(brands)
         return context
-
-# class ProductsListOrder(ProductsList):    
-#     def get_queryset(self):
-#         slug = self.kwargs.get(self.slug_url_kwargs)
-#         test = set(Product.objects.filter(category__slug=slug))
-#         print(test)
-#         return Product.objects.filter(category__slug=slug).order_by('-shop_product__price')
-    
 
 
 @csrf_exempt
