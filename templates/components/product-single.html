@@ -39,7 +39,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-3 p-0 text-right">
+            <div class="col-3 p-0 text-right main-info">
                 <span>امتیاز {{average_rate}} از ۵</span><br>
                 <a href="#details"><small>{{comments_count}} دیدگاه کاربران</small></a>
                 <ul class="px-0">
@@ -231,8 +231,9 @@
             url: "{% url 'add_to_order' %}",
             data: data,
             success: function(response){
-                // const data = JSON.parse(response)
-                console.log(response)
+                $('.main-info').append(`
+                <div class="alert alert-success mx-auto px-0 text-center">کالا با موفقیت به سبد خرید شما اضافه شد.</div>
+                `)
             }
         })
     }

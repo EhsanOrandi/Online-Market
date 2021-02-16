@@ -35,7 +35,21 @@
         </div>
     </div>
     <div class="col-8">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-4 mx-auto bg-light products-container">
+        <div class="text-right bg-light mt-4 mb-1 py-1 pr-3 rounded sort-list">
+            <form action="" id="filter-form"></form>
+            مرتب سازی بر اساس : 
+        <select onchange="submitForm()" form="filter-form" name="filter" class="rounded bg-light">
+            <option>-----</option>
+            <option value="lowest_price">
+                ارزان ترین
+            </option>
+            <option value="highest_price">
+                گران ترین
+            </option>
+        </select>
+        </div>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mb-4 mx-auto bg-light products-container">
             {% for product in product_list %}
             <div class="col {{product.brand}}" id="{{product.name}}">
                 <a href="{% url 'product_single' product.slug %}">
@@ -81,9 +95,26 @@
         });
 
         $(document).ready(function(){
-            var test = $('.products-container').children()
-            console.log(test)
+            var id_list = []
+            $('.products-container').children().each(function(){
+                id_list.push($(this).attr('id'))
+            })
+            $('.products-container').children().each(function(){
+                let index = id_list.indexOf($(this).attr('id'));
+                if (index > -1) {
+                    id_list.splice(index, 1);
+                }
+                if(jQuery.inArray( $(this).attr('id'), id_list ) > -1){
+                    $(this).hide()
+                }
+            })
         })
+
+        function submitForm() {
+            document.getElementById('filter-form').submit();
+        }
+
+
 
     </script>
     {% endblock %}

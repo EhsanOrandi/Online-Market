@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import UserRegisterationForm
 from .models import User, Shop, Address
@@ -30,12 +30,12 @@ class Profile(DetailView):
         user = context.get('user', None)
         context['address'] = Address.objects.filter(user=user)
         context['shops'] = Shop.objects.filter(user=user) 
-        print(context['address'])
         return context
 
 class UpdateProfile(UpdateView):
     model = User
     fields = ['email', 'first_name', 'last_name', 'mobile', 'avatar']
     template_name = 'components/update-profile.html'
-    success_url = '/'
-    success_message = 'Your profile was changed successfully.'
+
+    def get_success_url(self):
+        return reverse('profile', args = (self.object.id,))
