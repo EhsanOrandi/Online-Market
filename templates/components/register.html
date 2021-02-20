@@ -1,16 +1,15 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {%  block title %}
-    Register
+    ثبت نام
 {% endblock %}
 
 {% block body %}
     <div class="container my-5">
-        <form action="{% url 'register' %}" method="post" class="col-6">
+        <form action="{% url 'register' %}" method="post" class="col-lg-6 col-sm-12">
             <!-- <div class="row"> -->
                 {% csrf_token %}
-                {{ form.as_p }}
-                {# % include 'components/forms.html' % #}
+                {% include 'components/forms.html' %}
             <!-- </div> -->
             <input type="submit" class="btn btn-outline-primary" value="ایجاد حساب کاربری">
         </form>

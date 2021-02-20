@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% block title %}
-BehShop
+    به شاپ  
 {% endblock %}
 {% block body %}
 <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
@@ -32,9 +32,9 @@ BehShop
 </div>
 <!-- end of Carousel -->
 <div class="container my-5 px-0 pb-2">
-    <div class="row justify-content-center categories">
+    <div class="row justify-content-center categories" id="categories_list">
         {% for category in categories %}
-        <div class="hvrbox">
+        <div class="hvrbox mx-5 mt-5">
             <a href="{% url 'category_single' category.slug %}">
                 <img src="{{category.image.url}}" alt="{{category.name}}" class="hvrbox-layer_bottom">
                 <div class="hvrbox-layer_top hvrbox-layer_rotate">
@@ -52,7 +52,7 @@ BehShop
         </div>
         <div class="card-deck row mx-auto justify-content-around">
             {% for product in products %}
-            {% if forloop.counter0 < 3 %} <a href="{% url 'product_single' product.product.slug %}" class="col-3 text-center mb-3">
+            {% if forloop.counter0 < 3 %} <a href="{% url 'product_single' product.product.slug %}" class="col-lg-3 col-sm-12 text-center mb-3">
                 <div>
                     <div class="mt-1">
                         <img class="card-img-top" src="{{product.product.image.url}}" alt="Card image cap">
@@ -75,7 +75,7 @@ BehShop
         <div class="card-deck row mx-auto justify-content-around">
             {% for product in products %}
             {% if forloop.counter0 > 3 and forloop.counter0 < 7 %} 
-            <a href="{% url 'product_single' product.product.slug %}" class="col-3 text-center mb-3">
+            <a href="{% url 'product_single' product.product.slug %}" class="col-lg-3 col-sm-12 text-center mb-3">
                 <div>
                     <div class="mt-1">
                         <img class="card-img-top" src="{{product.product.image.url}}" alt="Card image cap">
@@ -98,7 +98,7 @@ BehShop
         <div class="card-deck row mx-auto justify-content-around">
             {% for product in products %}
             {% if forloop.counter0 > 6 and forloop.counter0 < 10 %} 
-            <a href="{% url 'product_single' product.product.slug %}" class="col-3 text-center mb-3">
+            <a href="{% url 'product_single' product.product.slug %}" class="col-lg-3 col-sm-12 text-center mb-3">
                 <div>
                 <div class="mt-1">
                     <img class="card-img-top" src="{{product.product.image.url}}" alt="Card image cap">
@@ -120,7 +120,7 @@ BehShop
     </div>
     <div class="card-deck row mx-auto justify-content-around">
         {% for brand in brands %}
-        {% if forloop.counter0 < 3 %} <div class="col-3 text-center border-0 mb-3">
+        {% if forloop.counter0 < 3 %} <div class="col-lg-3 col-sm-12 text-center border-0 mb-3">
             <div class="mt-1">
                 <img class="card-img-top" src="{{brand.image.url}}" alt="Card image cap">
             </div>

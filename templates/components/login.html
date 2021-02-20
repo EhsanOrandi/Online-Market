@@ -6,10 +6,9 @@
 
 {% block body %}
     <div class="container my-5">
-        <form action="{% url 'login' %}" method="post" class="text-right">
+        <form action="{% url 'login' %}" method="post" class="col-lg-6 col-sm-12">
             {% csrf_token %}
-            {{ form.as_p }}
-            {# % include 'components/forms.html' % #}
+            {% include 'components/forms.html' %}
             <input type="submit" class="btn btn-outline-success ml-3" value="ورود به حساب کاربری"><br>
             <a href="{% url 'register' %}" class="ml-3">ایجاد حساب کاربری</a>
         </form>

@@ -1,6 +1,6 @@
 {{ form.non_field_errors }}
 {% for field in form %}
-    <div class="form-group border">
+    <div class="form-group text-right">
         {{ field.label_tag }} {{ field }}
         {% if field.help_text %}
             <small class="form-text text-muted">{{ field.help_text|safe }}</small>

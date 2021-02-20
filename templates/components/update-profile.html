@@ -1,15 +1,14 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {%  block title %}
-      Update Profile
+      ویرایش اطلاعات
 {% endblock %}
 
 {% block body %}
     <div class="container my-5">
-        <form action="{% url 'update-profile' user.id %}" method="post">
+        <form action="{% url 'update-profile' user.id %}" method="post" class="col-lg-6 col-sm-12">
             {% csrf_token %}
-            {{ form.as_p }}
-            {# % include 'components/forms.html' % #}
+            {% include 'components/forms.html' %}
             <input type="submit" class="btn btn-outline-success ml-3" value="ذخیره اطلاعات"><br>
         </form>
     </div>

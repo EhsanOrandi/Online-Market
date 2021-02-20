@@ -3,15 +3,15 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'static/css/profile.css' %}">
 {% endblock %}
-{%  block title %}
-      Profile
+{%  block title %} 
+    پروفایل  
 {% endblock %}
 
 {% block body %}
     <div class="container my-5 pt-1">
         <p class="personal-info text-right">اطلاعات کاربری</p>
         <div class="row">
-            <div class="avatar col-3 rounded-circle">
+            <div class="avatar col-lg-3 col-sm-12 rounded-circle">
                 {% if user.avatar %}
                 <img src="{{user.avatar.url}}" class="rounded-circle col-12 mt-4" width="200" height="200" alt="{{user.get_full_name}}">
                 {% else %}
@@ -19,27 +19,27 @@
                 {% endif %}
                 <button class="btn btn-outline-info col-12 mt-5 rounded"><a href="{% url 'update-profile' user.id %}">ویرایش اطلاعات</a></button>
             </div>
-            <div class="col-8">
-                <table class="table table-borderless text-right mr-5">
+            <div class="col-lg-8 col-sm-12">
+                <table class="table table-borderless text-right mr-lg-5 mr-1">
                     <tbody>
                         <tr class="d-flex">
-                            <td class="col-3">نام :</td>
+                            <td class="col-lg-3 col-sm-4">نام :</td>
                             <td class="col-8">{{user.first_name}}</td>
                         </tr>
                         <tr class="d-flex">
-                            <td class="col-3">نام خانوادگی :</td>
+                            <td class="col-lg-3 col-sm-4">نام خانوادگی :</td>
                             <td class="col-8">{{user.last_name}}</td>
                         </tr>
                         <tr class="d-flex">
-                            <td class="col-3">ایمیل :</td>
+                            <td class="col-lg-3 col-sm-4">ایمیل :</td>
                             <td class="col-8">{{user.email}}</td>
                         </tr>
                         <tr class="d-flex">
-                            <td class="col-3">تلفن همراه :</td>
+                            <td class="col-lg-3 col-sm-4">تلفن همراه :</td>
                             <td class="col-8">{{user.mobile}}</td>
                         </tr>
                         <tr class="d-flex">
-                            <td class="col-3">آدرس</td>
+                            <td class="col-lg-3 col-sm-4">آدرس :</td>
                             <td class="col-8">
                                 {% for item in address %}
                                     <p>{{item.city}} - {{item.street}} - {{item.alley}} (کد پستی : {{item}})</p>

@@ -97,8 +97,8 @@ h4{
     display: inline-block;
     overflow: hidden;
     width: 150px !important;
-    margin-right: 6%;
-    margin-bottom: 6%;
+    margin-right: 2% !important;
+    margin-bottom: 2% !important;
     transform: rotate(45deg);
     border: 1px solid cadetblue;
     border-radius: 10px;
