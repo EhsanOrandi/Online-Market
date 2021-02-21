@@ -4,11 +4,11 @@
 </div>
 <nav class="navbar navbar-light header">
     <div class="container-fluid">
-        <a class="navbar-brand col-xs-6" href="{% url 'home' %}"><img
+        <a class="navbar-brand mr-0 mr-lg-3" href="{% url 'home' %}"><img
                 src="{% static 'static/images/logonomy-1609947608908-removebg-preview.png' %}" alt=""></a>
 
 
-        <button class="navbar-toggler col-xs-1 d-lg-none" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+        <button class="navbar-toggler d-lg-none order-2 mt-2" type="button" data-toggle="collapse" data-target="#basicExampleNav"
             aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -40,16 +40,16 @@
 
 
 
-        <div class="input-group w-50 col-xs-12">
+        <div class="input-group w-50 order-1">
             <form action="{% url 'search' %}" class="w-100 row">
-                <input type="search" class="form-control rounded col-10" name="search"
+                <input type="search" class="form-control rounded col-lg-10" name="search"
                     placeholder="جستجو در به شاپ  ..." aria-label="Search" aria-describedby="basic-addon2">
-                <button class="btn btn-outline-warning me-2 ol-2" type="submit">جستجو</button>
+                <button class="btn btn-outline-warning me-2 ol-2 col-lg-2" type="submit">جستجو</button>
             </form>
         </div>
-        <div class="ml-5 row col-xs-12">
+        <div class="ml-lg-5 ml-0 mt-sm-2 row order-3">
             {% if request.user.is_authenticated %}
-            <div class="dropdown show col-8">
+            <div class="dropdown show col-lg-8">
                 <span class="btn dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user"></i>
@@ -60,7 +60,7 @@
                     <a class="dropdown-item" href="{% url 'logout' %}">خروج</a>
                 </div>
             </div>
-            <a href="{% url 'cart' user.id %}" class="col-3 py-2"><i class="fa fa-shopping-cart"></i></a>
+            <a href="{% url 'cart' user.id %}" class="col-lg-3 py-2"><i class="fa fa-shopping-cart"></i></a>
             {% else %}
             <a href="{% url 'login' %}" class="py-2">
                 <i class="fa fa-user"></i>
