@@ -19,7 +19,7 @@ class Order(models.Model) :
 
 
 class OrderItem(models.Model) :
-    order = models.ForeignKey(Order, verbose_name=_("order"), on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='order_item', related_query_name='order_item', verbose_name=_("order"), on_delete=models.CASCADE)
     shop_product = models.ForeignKey("products.ShopProduct", verbose_name=_("shop product"), on_delete=models.CASCADE)
     count = models.IntegerField(_("Count"))
     price = models.IntegerField(_("Price"))
