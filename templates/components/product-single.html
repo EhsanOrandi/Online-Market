@@ -200,7 +200,6 @@
     function add_comment(){
         var comment = $.trim($("#comment-body").val());
         var rate = get_comment_rate()
-        console.log(rate)
         const data = JSON.stringify({comment, rate, product_id:{{product.id}}})
         $.ajax({
             type: "post",
@@ -219,6 +218,10 @@
                 </div>
             </div>
                 `)
+            }, error: function(error){
+                $('#submit-comment').after(`
+                <div class="alert alert-danger w-50 mx-auto px-0 text-center">برای افزودن دیدگاه ابتدا باید وارد حساب کاربری خود شوید.</div>
+                `)
             }
         });
     };
@@ -233,6 +236,10 @@
             success: function(response){
                 $('.main-info').append(`
                 <div class="alert alert-success mx-auto px-0 text-center">کالا با موفقیت به سبد خرید شما اضافه شد.</div>
+                `)
+            }, error: function(error){
+                $('.main-info').append(`
+                <div class="alert alert-danger mx-auto px-0 text-center">برای خرید ابتدا باید وارد حساب کاربری خود شوید.</div>
                 `)
             }
         })

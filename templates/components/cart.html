@@ -22,7 +22,7 @@
               </tr>
             </thead>
             <tbody>
-              {% for item in order_items %}
+              {% for item in cart.order_item.all %}
               <tr id="{{item.shop_product.product.id}}">
                 <td scope="row"></td>
                 <td id="name{{item.shop_product.product.id}}">{{item.shop_product.product}}</td>
@@ -44,12 +44,16 @@
     <script>
     
       $(document).ready(function(){
-        $('tbody tr').each(function(){
-          var count = $(this).children(':nth-child(3)').children('input').val()
-          var price = $(this).children(':nth-child(4)').html()
-          $(this).children(':nth-child(5)').text(Number(count)*Number(price))
-        })
+          var single_price = 0
+          $('tbody tr').each(function(){
+            var count = $(this).children(':nth-child(3)').children('input').val()
+            var price = $(this).children(':nth-child(4)').html()
+            $(this).children(':nth-child(5)').text(Number(count)*Number(price))
+            single_price = single_price + Number($(this).children(':nth-child(5)').html())
+          })
+          $('.table-responsive').after(`<div class="total-pay">جمع کل مبلغ قابل پرداخت :  ${single_price} تومان </div>`)
       })
+
 
 
       $("input[type='number']").change(function(){
@@ -60,6 +64,11 @@
         $(`#total-price${product_id}`).text(total_price)        
         var shop = $(`#shop${product_id}`).text()
         add_to_order(product_id, shop, unit_price)
+        var single_price = 0
+        $('tbody tr').each(function(){
+          single_price = single_price + Number($(this).children(':nth-child(5)').html())
+        })
+        $('.total-pay').text(`جمع کل مبلغ قابل پرداخت :  ${single_price} تومان`)
       })
 
       function add_to_order(product_name, shop_product_name, product_price){

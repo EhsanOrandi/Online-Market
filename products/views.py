@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from .models import ShopProduct, Product, Image, Category, Comment, ProductMeta, Comment_like
 from accounts.models import Shop
@@ -15,6 +16,7 @@ class ProductSingle(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductSingle, self).get_context_data(**kwargs)
         product = context.get('product', None)
+        context['categories'] = Category.objects.filter(parent__isnull=True)
         context['seller'] = ShopProduct.objects.filter(product=product).first()
         context['images'] = Image.objects.filter(product=product)
         context['info'] = ProductMeta.objects.filter(product=product)
@@ -41,6 +43,7 @@ class ProductsList(ListView):
         for product in context['product_list']:
             brands.append(product.brand)
         context['brands'] = set(brands)
+        context['categories'] = Category.objects.filter(parent__isnull=True)
         return context
 
 
@@ -60,7 +63,6 @@ def likeComment(request):
 
     result = {'like_count':comment.like_count}
     return HttpResponse(json.dumps(result), status=201)
-
 
 @csrf_exempt
 def add_comment(request):
@@ -84,6 +86,7 @@ class ShopDetails(DetailView):
         context = super(ShopDetails, self).get_context_data(**kwargs)
         shop = context.get('shop', None)
         context["products"] = ShopProduct.objects.filter(shop=shop) 
+        context['categories'] = Category.objects.filter(parent__isnull=True)
         return context
 
 def search_page(request):
